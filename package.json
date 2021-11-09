@@ -1,0 +1,23 @@
+{
+  "name": "dl-args",
+  "version": "1.0.0",
+  "description": "Argument parser minus the dashes",
+  "main": "index.js",
+  "scripts": {
+    "test": "node test/test.js"
+  },
+  "keywords": [
+    "Arguments",
+    "cli",
+    "command"
+  ],
+  "author": "Tomas Rakusan",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/node": "~16.11.6",
+    "typescript": "~4.4.4"
+  },
+  "dependencies": {
+    "word-wrap": "~1.2.3"
+  }
+}
