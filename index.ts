@@ -1,6 +1,6 @@
 import { isStringArray, linguisticJoin } from './lib/stringTools'
 import { addToTree, getFromTree, ITree } from './lib/tree'
-import { ParamConfig, ParamGroupConfig, ParamReaderConfig } from './lib/types'
+import { ParamConfig, ParamGroupConfig, ParamReaderConfig } from './types'
 import wrap from 'word-wrap'
 
 type IKeyVal<T> = { [key: string]: T }

@@ -1,6 +1,6 @@
 import assert from 'assert';
 import { getParams } from '..';
-import { ParamReaderConfig } from '../lib/types';
+import { ParamReaderConfig } from '../types';
 function parFunc(opt: ParamReaderConfig) {
     return getParams([
         {
