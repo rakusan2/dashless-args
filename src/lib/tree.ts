@@ -1,4 +1,4 @@
-import { ParamConfig } from '../../types'
+import { ParamConfig } from '../types/types'
 
 export function addToTree(tree: ITree, config: ParamConfig, index = 0) {
     const val = config.shortName

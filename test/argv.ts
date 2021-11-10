@@ -1,4 +1,4 @@
-import { getParams } from '..';
+import { getParams } from '../src';
 
 console.log(getParams([
     {

@@ -1,3 +1,5 @@
+// is not a .d.ts due to typescript not placing the output in the correct structure
+
 export interface ParamReaderConfig {
     /** Will be used instead of `process.argv` */
     source?: string[]
