@@ -435,14 +435,15 @@ function printHelp(configArr: (ParamConfig | ParamGroupConfig | string)[], optio
             if (typeof config.description === 'string') {
                 stdout.write('\tGroup ' + config.groupName + '\n')
                 stdout.write(wrap(config.description, { indent: '\t    ', width: stdout.columns - 10 }))
-                stdout.write('\n\n')
+                stdout.write('\n')
             }
 
             for (let parI = 0; parI < pars.length; parI++) {
                 const conf = pars[parI]
                 if (typeof conf === 'string') printParamHelp(stdout, { name: conf, type: 'string' }, '\t\t')
-                else printParamHelp(stdout, conf, hasDesc ? '\t\t' : '\t')
+                else printParamHelp(stdout, conf, hasDesc ? '\t\t' : '\t', config.groupName)
             }
+            if(hasDesc) stdout.write('\n')
         }
         else {
             printParamHelp(stdout, config)
