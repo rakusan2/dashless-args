@@ -141,6 +141,8 @@ A param definition can be as simple as a `string` upon which it will be replaced
 - **continueAfterHelp**
     - Don't call `process.exit(0)` after printing help info
     - Parameter `help: true` will be added to the returned object if help was called
+- **commandName**
+    - Changes the name of command name in usage section of `help`
 
 ## Disabling help
 1. Setting `options.disableHelp: true`

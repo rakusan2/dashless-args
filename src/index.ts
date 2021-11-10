@@ -413,14 +413,14 @@ function containsHelp(arr: string[], config: ParamConfig[], options: ParamReader
 }
 
 function printHelp(configArr: (ParamConfig | ParamGroupConfig | string)[], options: ParamReaderConfig) {
-    const { disableDashedMode, disableDashlessMode } = options
+    const { disableDashedMode, disableDashlessMode, commandName = 'command' } = options
     const stdout = process.stdout
     stdout.write('Usage:\n')
     if (!disableDashlessMode) {
-        stdout.write('\tcommand [arg] [short arg] [arg]=[value]\n')
+        stdout.write(`\t${commandName} [arg] [short arg] [arg]=[value]\n`)
     }
     if (!disableDashedMode) {
-        stdout.write('\tcommand --[arg] -[short arg][short arg] --[arg] [value] --[arg]=[value]\n')
+        stdout.write(`\t${commandName} --[arg] -[short arg][short arg] --[arg] [value] --[arg]=[value]\n`)
     }
     stdout.write('\nArguments:\n')
     for (let i = 0; i < configArr.length; i++) {

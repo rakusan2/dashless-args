@@ -19,6 +19,12 @@ export interface ParamReaderConfig {
      * By default `process.exit(0)` is called after printing `help` info
     */
     continueAfterHelp?: boolean
+    /**
+     * Command Name
+     * 
+     * Used only in `help`
+     */
+    commandName?:string
 }
 
 export type ParamTypes = 'string' | 'number' | 'boolean'
