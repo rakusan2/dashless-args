@@ -372,8 +372,10 @@ function requiresVal({ switchValue, type }: ParamConfig) {
 const validConfigTypes = ['string', 'number', 'boolean']
 
 function assertAndFixConfig(config: ParamConfig, options?: ParamReaderConfig) {
-    if (config.name == null || config.name.length === 0) throw new Error('Config needs to have a name')
-    if ((typeof config.switchValue === 'undefined') && config.type == null) throw new Error(`Config ${config.name}: switchValue or type need to be set`)
+    const name = config.name
+    if (name == null || name.length === 0) throw new Error('Config needs to have a name')
+    if(name.includes(' ') || name.includes('\t') || name.includes('\n')) throw new Error(`Config can not be named "${name}"`)
+    if ((typeof config.switchValue === 'undefined') && config.type == null) throw new Error(`Config ${name}: switchValue or type need to be set`)
     if (config.catchAll === true) config.multiple = true
     if (options?.caseSensitive !== true) {
         if (config.shortName != null) config.shortName = config.shortName.toLowerCase()
@@ -384,14 +386,14 @@ function assertAndFixConfig(config: ParamConfig, options?: ParamReaderConfig) {
     }
     if (config.type != null && typeof config.type !== 'function') {
         if (typeof config.type === 'string') {
-            if (!validConfigTypes.includes(config.type)) throw new Error(`Config ${config.name}: Invalid type "${config.type}"`)
+            if (!validConfigTypes.includes(config.type)) throw new Error(`Config ${name}: Invalid type "${config.type}"`)
         } else if (isStringArray(config.type)) {
             const types = config.type
             for (let i = 0; i < types.length; i++) {
                 const str = types[i];
-                if (!validConfigTypes.includes(str)) throw new Error(`Config ${config.name}: Invalid type "${str}"`)
+                if (!validConfigTypes.includes(str)) throw new Error(`Config ${name}: Invalid type "${str}"`)
             }
-        } else throw new Error(`Config ${config.name}: Invalid type`)
+        } else throw new Error(`Config ${name}: Invalid type`)
     }
     return config
 }

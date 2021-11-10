@@ -65,15 +65,19 @@ Optionally it can use `options.source`
 A param definition can be as simple as a `string` upon which it will be replaced with `{ name: <value>, type: 'string' }`
 - **name**
     - The name of argument
+    - **Required**
 - **alias**
-    - Differrerent name or names for the argument
+    - Different name or names for the argument
     - accepts string or a string array
 - **shortName**
     - in dashless mode, same as alias
     - in dashed mode, can be used with a single dash
-    - Ex: if two switch parameters have `a` and `b`, they can be both set with `-ab`
+    - Ex: if two switch parameters have a shortName `a` and `b`, they can be both set with `-ab`
 - **propertyName**
     - If set, this will be used as the output object property name instead of `name`
+- **switchValue**
+    - Value to be set if none is passed to the parameter
+    - **Required** if `type` is not set
 - **type**
     - Type conversion for the parameter
     - Valid are `string`, `number`, `boolean`, an array of the previous, or a function that takes a string and outputs a value
@@ -97,9 +101,6 @@ A param definition can be as simple as a `string` upon which it will be replaced
 - **group**
     - To which object should this argument be assigned
     - Accepts `string` or an Array of `string`
-- **switchValue**
-    - Value to be set if none is passed to the parameter
-    - **Required** if `type` is not set
 - **multiple**
     - Enables multiple values to be set to an argument
     - If set the result will be an array
