@@ -6,3 +6,4 @@ tsconfig.json
 *.log
 !*.d.ts
 types/test/
+test/

@@ -135,3 +135,12 @@ A param definition can be as simple as a `string` upon which it will be replaced
     - Requires dashes when specifying a argument
 - **disableDashedMode**
     - Stop parsing dashes
+- **disableHelp**
+    - The argument `help` will be treated like any other argument
+- **continueAfterHelp**
+    - Don't call `process.exit(0)` after printing help info
+    - Parameter `help: true` will be added to the returned object if help was called
+
+## Disabling help
+1. Setting `options.disableHelp: true`
+2. Setting `help` to any name or alias in argument config
