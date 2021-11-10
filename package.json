@@ -1,6 +1,6 @@
 {
   "name": "dl-args",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Argument parser minus the dashes",
   "main": "src/index.js",
   "engines": {
