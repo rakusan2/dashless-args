@@ -8,10 +8,24 @@ console.log(getParams([
     },
     {
         groupName: 'g',
+        description:'Just some text. Just some more text. Just some more text. Just some more text. Just some more text. Just some more text. Just some more text. Just some more text. Just some more text.',
         parameters: [
             {
                 name: 'par2',
                 type: 'string'
+            }
+        ]
+    },
+    {
+        groupName: 'b',
+        parameters:[
+            {
+                name: 'par3',
+                shortName:'p3',
+                alias: ['1par3', '2par3', '3par3'],
+                description: 'Just another argument.',
+                switchValue: 5,
+                type:['string', 'boolean', 'number']
             }
         ]
     },

@@ -435,7 +435,7 @@ function printHelp(configArr: (ParamConfig | ParamGroupConfig | string)[], optio
             if (typeof config.description === 'string') {
                 stdout.write('\tGroup ' + config.groupName + '\n')
                 stdout.write(wrap(config.description, { indent: '\t    ', width: stdout.columns - 10 }))
-                stdout.write('\n')
+                stdout.write('\n\n')
             }
 
             for (let parI = 0; parI < pars.length; parI++) {
@@ -468,6 +468,7 @@ function printParamHelp(stdout: NodeJS.WriteStream, config: ParamConfig, indent 
 
     if (typeof config.type === 'string') types.push(config.type)
     else if (Array.isArray(config.type)) types.push(...config.type)
+    else if (typeof config.type === 'function') types.push('string')
 
     stdout.write(`${indent}    Type${types.length > 1 ? 's' : ''}: ${linguisticJoin(types)}\n`)
 
@@ -475,6 +476,6 @@ function printParamHelp(stdout: NodeJS.WriteStream, config: ParamConfig, indent 
     else if (config.multiple === true) stdout.write(indent + '    Can be called more than once\n')
 
     if (typeof config.description === 'string') {
-        stdout.write(wrap(config.description, { indent: indent + '    ', width: stdout.columns - 10 }))
+        stdout.write(wrap(config.description, { indent: indent + '    ', width: stdout.columns - 10 }) + '\n')
     }
 }
