@@ -19,6 +19,14 @@ export function getParams(configPar: (ParamConfig | ParamGroupConfig | string)[]
     const { caseSensitive = false, disableDashlessMode = false, disableDashedMode = false } = options ?? {}
     const hasDash = disableDashlessMode || args.some(a => a[0] === '-')
     if (disableDashedMode && disableDashlessMode) throw new Error('Both modes of operation were disabled')
+    if (options.extraParams != null && options.extraParams !== false) {
+        if (options.extraParams === true) options.extraParams = '_extra'
+        const extName = options.extraParams
+        if (typeof extName != 'string') throw new Error('options.extraProperty has invalid type')
+        if (willSetProperty(config, extName)) {
+            throw new Error(`Setting for extra params (${extName}) conflicts with a parameter definition`)
+        }
+    }
 
     if (containsHelp(args, config, options)) {
         printHelp(configPar, options)
@@ -35,7 +43,10 @@ export function getParams(configPar: (ParamConfig | ParamGroupConfig | string)[]
                 if (arg.length === 2) continue
                 arg = arg.slice(2)
                 const { conf, val } = getConfVal(config, arg, caseSensitive)
-                if (typeof conf === 'string') throw new Error('Unknown parameter ' + conf)
+                if (typeof conf === 'string') {
+                    addExtraParam(res, conf, val, options)
+                    continue
+                }
                 if (canGetVal(conf)) {
                     if (val != null) {
                         assignValue(res, conf, caseSensitive, val)
@@ -89,7 +100,10 @@ export function getParams(configPar: (ParamConfig | ParamGroupConfig | string)[]
         } else {
             const { conf, val } = getConfVal(config, arg, true)
             if (typeof conf === 'string') {
-                if (val != null) throw new Error('Unknown parameter ' + conf)
+                if (val != null) {
+                    addExtraParam(res, conf, val, options)
+                    continue
+                }
                 assignNextValue(res, config, caseSensitive, arg)
             } else if (val == null && conf.switchValue == null) {
                 assignNextValue(res, config, caseSensitive, arg)
@@ -144,6 +158,32 @@ function setDefaults(obj: IKeyVal<any>, config: ParamConfig[]) {
     }
 }
 
+function addExtraParam(obj: IKeyVal<any>, key: string, val: string | null, options: ParamReaderConfig) {
+    const extraName = options.extraParams
+    if (typeof extraName !== 'string') throw new UnknownKeyError(key, val ?? undefined)
+
+    const extraObj: { key: string, val?: string }[] = obj[extraName] ?? (obj[extraName] = [])
+    if (val == null) extraObj.push({ key })
+    else extraObj.push({ key, val })
+}
+
+function willSetProperty(configArr: ParamConfig[], name: string): boolean {
+    for (let i = 0; i < configArr.length; i++) {
+        const conf = configArr[i];
+        if (conf.group != null) {
+            if (typeof conf.group === 'string') {
+                if (conf.group === name) return true
+            }
+            else if (conf.group.includes(name)) return true
+        }
+        else if (conf.propertyName != null) {
+            if (conf.propertyName === name) return true
+        }
+        else if (conf.name === name) return true
+    }
+    return false
+}
+
 function replaceStringAndGroupConfig(config: (ParamConfig | ParamGroupConfig | string)[], options?: ParamReaderConfig): [ParamConfig[], { name: string, func: (val: any) => any }[]] {
     const res: ParamConfig[] = []
     const finFuncs: { name: string, func: (val: any) => any, required?: string[] }[] = []
@@ -183,6 +223,12 @@ export class MissingValueError extends Error {
 export class AssignValueError extends Error {
     constructor(public conf: ParamConfig, value?: string) {
         super(`${conf.name}${conf.shortName == null ? '' : ` (-${conf.shortName})`}: trying to assign "${value ?? 'null'}" to ${getConfTypeString(conf)}`)
+    }
+}
+
+export class UnknownKeyError extends Error {
+    constructor(public key: string, public value?: string) {
+        super(`Unknown Parameter ${key}`)
     }
 }
 
@@ -374,7 +420,7 @@ const validConfigTypes = ['string', 'number', 'boolean']
 function assertAndFixConfig(config: ParamConfig, options?: ParamReaderConfig) {
     const name = config.name
     if (name == null || name.length === 0) throw new Error('Config needs to have a name')
-    if(name.includes(' ') || name.includes('\t') || name.includes('\n')) throw new Error(`Config can not be named "${name}"`)
+    if (name.includes(' ') || name.includes('\t') || name.includes('\n')) throw new Error(`Config can not be named "${name}"`)
     if ((typeof config.switchValue === 'undefined') && config.type == null) throw new Error(`Config ${name}: switchValue or type need to be set`)
     if (config.catchAll === true) config.multiple = true
     if (options?.caseSensitive !== true) {
@@ -445,7 +491,7 @@ function printHelp(configArr: (ParamConfig | ParamGroupConfig | string)[], optio
                 if (typeof conf === 'string') printParamHelp(stdout, { name: conf, type: 'string' }, '\t\t')
                 else printParamHelp(stdout, conf, hasDesc ? '\t\t' : '\t', config.groupName)
             }
-            if(hasDesc) stdout.write('\n')
+            if (hasDesc) stdout.write('\n')
         }
         else {
             printParamHelp(stdout, config)

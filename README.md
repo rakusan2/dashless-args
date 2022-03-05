@@ -136,9 +136,14 @@ A param definition can be as simple as a `string` upon which it will be replaced
     - Requires dashes when specifying a argument
 - **disableDashedMode**
     - Stop parsing dashes
+- **extraParams**
+    - Add undefined params to `._extra` parameter
+    - Setting string to this will overwrite the parameter name
+    - The type of the `_extra` property will be an array of key val objects
 - **disableHelp**
     - The argument `help` will be treated like any other argument
 - **continueAfterHelp**
+
     - Don't call `process.exit(0)` after printing help info
     - Parameter `help: true` will be added to the returned object if help was called
 - **commandName**

@@ -24,7 +24,15 @@ export interface ParamReaderConfig {
      * 
      * Used only in `help`
      */
-    commandName?:string
+    commandName?: string
+    /**
+     * Enable or set parameter for undefined params
+     * 
+     * If Enabled, function will not throw Unknown Parameter Error
+     * 
+     * default is `_extra`
+     */
+    extraParams?: boolean | string
 }
 
 export type ParamTypes = 'string' | 'number' | 'boolean'

@@ -28,3 +28,5 @@ assert.deepStrictEqual(parFunc({ source: ['par=5', 'g-par2=two'] }), { par: 5, g
 assert.deepStrictEqual(parFunc({ source: ['--par', '5', '--g-par2=two'] }), { par: 5, g: { par2: 'two' } })
 assert.deepStrictEqual(parFunc({ source: ['5', 'two', 'three', 'four'] }), { par: 5, g: { par2: 'two' }, rest: ['three', 'four'] })
 assert.deepStrictEqual(parFunc({ source: ['str=one'] }), { str: 'one' })
+assert.deepStrictEqual(parFunc({ source: ['str=one:1'] }), { str: 'one:1' })
+assert.deepStrictEqual(parFunc({ source: ['pogo=extra'], extraParams: true }), { _extra: [{ key: 'pogo', val: 'extra' }] })
